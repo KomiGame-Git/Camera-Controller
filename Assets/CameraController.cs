@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (cameraMode == 0)
             {

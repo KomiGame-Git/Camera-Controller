@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Camera Controller.sln"
+    "dotnet.defaultSolution": "Camera-Controller-Git.sln"
 }
