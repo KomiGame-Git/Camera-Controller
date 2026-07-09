@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 2
+  maxAngle_Y: 80
   cameraAnchorObject: {fileID: 403982349}
   cameraObject: {fileID: 963194225}
   targetObject: {fileID: 1824544783}
@@ -570,7 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   speed: 5
-  cameraController: {fileID: 403982351}
+  jumpForce: 5
   cameraObject: {fileID: 963194225}
 --- !u!1 &1765915596
 GameObject:

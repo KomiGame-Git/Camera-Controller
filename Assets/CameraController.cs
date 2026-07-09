@@ -6,6 +6,8 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField]
     float rotationSpeed = 2.0f;
+    [SerializeField, Range(60f, 90f)]
+    float maxAngle_Y = 80.0f;
     float mouse_X;
     float mouse_Y;
     public GameObject cameraAnchorObject;
@@ -36,15 +38,46 @@ public class CameraController : MonoBehaviour
 
         mouse_X = Input.GetAxis("Mouse X") * rotationSpeed;
         mouse_Y = Input.GetAxis("Mouse Y") * rotationSpeed;
+
+        Vector3 targetBack = targetObject.transform.forward * -1f;
+        Vector3 targetToCamera = (cameraObject.transform.position - targetObject.transform.position).normalized;
+        Vector3 targetRight = Vector3.Cross(targetToCamera, targetBack).normalized;
+        if (targetToCamera.y < 0)
+        {
+            targetRight = -targetRight;
+        }
+
+        Debug.DrawLine(targetObject.transform.position, targetObject.transform.position + targetBack * 2f, Color.red);
+        Debug.DrawLine(targetObject.transform.position, targetObject.transform.position + targetRight * 2f, Color.green);
+        Debug.DrawLine(targetObject.transform.position, targetObject.transform.position + targetToCamera * 2f, Color.blue);
+
+        float angle = Vector3.SignedAngle(targetToCamera, targetBack, targetRight);
+        Debug.Log($"targetToCamera: {targetToCamera}, angle: {angle}");
         if (cameraMode == 0)
         {
+            // カメラをマウスの動きに合わせて回転
             cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, Vector3.up, mouse_X);
-            cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
+            
+            if (-mouse_Y > 0)
+            {
+                if(angle < maxAngle_Y - rotationSpeed)
+                {
+                    cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
+                }
+            }
+            else if (-mouse_Y < 0)
+            {
+                if(angle > -maxAngle_Y + rotationSpeed)
+                {
+                    cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
+                }
+            }
         }
         else
         {
             if (Input.GetMouseButton(1))
             {
+                // 右クリックが押されている場合のみカメラを回転
                 cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, Vector3.up, mouse_X);
                 cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
             }
