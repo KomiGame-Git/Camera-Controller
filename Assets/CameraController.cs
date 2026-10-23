@@ -39,8 +39,8 @@ public class CameraController : MonoBehaviour
         mouse_X = Input.GetAxis("Mouse X") * rotationSpeed;
         mouse_Y = Input.GetAxis("Mouse Y") * rotationSpeed;
 
-        Vector3 targetBack = targetObject.transform.forward * -1f;
         Vector3 targetToCamera = (cameraObject.transform.position - targetObject.transform.position).normalized;
+        Vector3 targetBack = new Vector3(targetToCamera.x, 0f, targetToCamera.z).normalized;
         Vector3 targetRight = Vector3.Cross(targetToCamera, targetBack).normalized;
         if (targetToCamera.y < 0)
         {
@@ -57,17 +57,17 @@ public class CameraController : MonoBehaviour
         {
             // カメラをマウスの動きに合わせて回転
             cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, Vector3.up, mouse_X);
-            
+
             if (-mouse_Y > 0)
             {
-                if(angle < maxAngle_Y - rotationSpeed)
+                if (angle < maxAngle_Y - rotationSpeed)
                 {
                     cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
                 }
             }
             else if (-mouse_Y < 0)
             {
-                if(angle > -maxAngle_Y + rotationSpeed)
+                if (angle > -maxAngle_Y + rotationSpeed)
                 {
                     cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
                 }
@@ -79,7 +79,21 @@ public class CameraController : MonoBehaviour
             {
                 // 右クリックが押されている場合のみカメラを回転
                 cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, Vector3.up, mouse_X);
-                cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
+
+                if (-mouse_Y > 0)
+                {
+                    if (angle < maxAngle_Y - rotationSpeed)
+                    {
+                        cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
+                    }
+                }
+                else if (-mouse_Y < 0)
+                {
+                    if (angle > -maxAngle_Y + rotationSpeed)
+                    {
+                        cameraObject.transform.RotateAround(cameraAnchorObject.transform.position, cameraObject.transform.right, -mouse_Y);
+                    }
+                }
             }
         }
 
